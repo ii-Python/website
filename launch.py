@@ -20,7 +20,11 @@ def get_template(path: str = "index") -> None:
     if path == "base":
         return abort(400)
 
-    return render_template(f"{path}.html"), 200
+    try:
+        return render_template(f"{path}.html"), 200
+
+    except Exception:
+        return abort(404)
 
 # Launch
 if __name__ == "__main__":
