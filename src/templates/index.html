@@ -1,13 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
+    <div id = "content">
+        <h1 class = "name-intro">{{ app._config["name"] }}</h1>
+        <h4 class = "tagline">Software Developer</h4>
 
-    <!-- Intro -->
-    <img src = "/~/img/pfp.png"> <h1 style = "display: inline;">{{ app._config["name"] }}</h1>
-    <h4>{{ app._config["tagline"] }}</h4>
+        <!-- Links -->
+        <div id = "links">
+            <a href = "mailto:{{ app._config['email'] }}"><i class = "bi bi-envelope"></i></a>
+            <a href = "https://github.com/{{ app._config['github'] }}"><i class = "bi bi-github"></i></a>
+            <a href = "https://discord.com/users/{{ app._config['discord'] }}"><i class = "bi bi-discord"></i></a>
+            <a href = "https://steamcommunity.com/id/{{ app._config['steam'] }}"><i class = "bi bi-steam"></i></a>
+            <a onclick = "toggleTheme();"><i class = "bi bi-{{ 'sun' if theme == 'dark' else 'moon' }}"></i></a>
+        </div>
 
-    <!-- Buttons -->
-    <div class = "pad2"></div>
-    <a class = "btn btn-outline-primary" href = "mailto:{{ app._config['email'] }}"><i class = "bi bi-envelope"></i> Send an Email</a>
-    <a class = "btn btn-outline-secondary" href = "https://github.com/{{ app._config['github'] }}"><i class = "bi bi-github"></i> Github Profile</a>
-    <a class = "btn btn-outline-success" href = "/services"><i class = "bi bi-hdd-stack"></i> Service List</a>
+        <!-- Image source -->
+        <div id = "image-source">
+            {% if theme == "light" %}
+                <a href = "https://reddit.com/r/windows/comments/lw4mst/i_remade_windows_xps_bliss_wallpaper_in/">Minimalist Bliss</a> <br>
+                <a href = "https://reddit.com/u/NayamAmarshe">by u/NayamAmarshe</a>
+            {% else %}
+                <a href = "https://github.com/microsoft/Build2020_DigitalSwag/blob/master/Desktop%20Wallpapers%20-%20Build%202020/Build_Wallpaper_DarkTheme_DesignA_8bit_marcduiker.png">Build 2020 - 8 bit</a> <br>
+                <a href = "https://github.com/microsoft">by Microsoft (GitHub)</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src = "https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        
+        const taglines = "{{ ','.join(app._config['taglines']) }}".split(",");
+        setInterval(() => {
+            if (!window.tagline) window.tagline = taglines[0];
+            $(".tagline").fadeOut("slow", () => { $(".tagline").text(window.tagline); })
+            $(".tagline").fadeIn("slow");
+            window.tagline = taglines[(taglines.indexOf(window.tagline) + 1) % taglines.length];
+        }, 5000);
+        function toggleTheme() {
+            document.cookie = `theme=${"{{ theme }}" == "light" ? "dark" : "light"}; SameSite=Lax`;
+            window.location.reload();
+        }
+    </script>
 {% endblock %}
