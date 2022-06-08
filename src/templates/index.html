@@ -28,14 +28,13 @@
     <!-- JS -->
     <script src = "https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        
         const taglines = "{{ ','.join(app._config['taglines']) }}".split(",");
         setInterval(() => {
             if (!window.tagline) window.tagline = taglines[0];
             $(".tagline").fadeOut("slow", () => { $(".tagline").text(window.tagline); })
             $(".tagline").fadeIn("slow");
             window.tagline = taglines[(taglines.indexOf(window.tagline) + 1) % taglines.length];
-        }, 5000);
+        }, 4000);
         function toggleTheme() {
             document.cookie = `theme=${"{{ theme }}" == "light" ? "dark" : "light"}; SameSite=Lax`;
             window.location.reload();
